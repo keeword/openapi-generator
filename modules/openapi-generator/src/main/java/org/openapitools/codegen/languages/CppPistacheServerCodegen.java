@@ -262,6 +262,26 @@ public class CppPistacheServerCodegen extends AbstractCppCodegen {
     }
 
     @Override
+    public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+        if (Objects.equals(property.openApiType, "integer") && property.dataFormat != null) {
+            switch (property.dataFormat) {
+                case "uint32":
+                    property.dataType = "uint32_t";
+					break;
+                case "uint64":
+                    property.dataType = "uint64_t";
+					break;
+                case "int32":
+                    property.dataType = "int32_t";
+					break;
+                case "int64":
+                    property.dataType = "int64_t";
+					break;
+            }
+        }
+    }
+
+    @Override
     public OperationsMap postProcessOperationsWithModels(OperationsMap objs, List<ModelMap> allModels) {
         OperationMap operations = objs.getOperations();
         String classname = operations.getClassname();
